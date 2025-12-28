@@ -94,7 +94,7 @@ const Page = () => {
   };
 
   const handleDeleteMessage = (messageId: string) => {
-    setMessages((prev) => prev.filter((m) => m._id !== messageId));
+    setMessages((prev) => prev.filter((m) => m._id.toString() !== messageId));
   };
 
   if (!session?.user) {
@@ -179,7 +179,7 @@ const Page = () => {
             <div className="grid gap-4">
               {messages.map((message) => (
                 <MessageCard
-                  key={message._id as string}
+                  key={message._id.toString()}
                   message={message}
                   onMessageDelete={handleDeleteMessage}
                 />
