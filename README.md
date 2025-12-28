@@ -67,7 +67,7 @@ Keep changes small and focused, do not commit environment variables or secrets, 
   <li>Zod & React Hook Form</li>
   <li>bcryptjs</li>
   <li>Axios</li>
-  <li>Radix UI</li>
+  <li>shadcn UI</li>
   <li>Tailwind CSS</li>
 </ul>
 
