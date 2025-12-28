@@ -1,6 +1,10 @@
 <h1 align="center" id="title">Secure Whisper</h1>
 
 <p align="center">
+  🌐 <a href="https://securewhisper.ashishx.in/" target="_blank"><b>Live Deployment</b></a>
+</p>
+
+<p align="center">
   <img src="https://socialify.git.ci/0xashishtiwari/secure-whisper/image?language=1&owner=1&name=1&stargazers=1&theme=Light" alt="project-image">
 </p>
 
