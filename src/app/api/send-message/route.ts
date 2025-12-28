@@ -20,8 +20,10 @@ export async function POST(request: Request) {
                 message: "User is not accepting messages at the moment"
             }, { status: 403 })
         }
+       
 
         const newMessage  = { content: content };
+        
         user.message.push(newMessage as Message);
         await user.save();
 

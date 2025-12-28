@@ -1,59 +1,79 @@
 'use client'
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import {  z } from "zod"
+import { z } from "zod"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useDebounceCallback  } from 'usehooks-ts'
+import { useDebounceCallback } from 'usehooks-ts'
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { signUpSchema } from "@/schemas/signUpSchema"
 import axios, { AxiosError } from "axios"
+import { ShieldCheck, UserPlus } from "lucide-react"
+
+import { signUpSchema } from "@/schemas/signUpSchema"
 import { ApiResponse } from "@/types/ApiResponse"
-import { Form, FormControl,  FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
-const page = () => {
+const SignUpPage = () => {
   const [username, setUsername] = useState("")
   const [usernameMessage, setUsernameMessage] = useState("")
   const [isCheckingUsername, setIsCheckingUsername] = useState(false)
-
   const [isSubmitting, setIsSubmitting] = useState(false)
+
   const debounced = useDebounceCallback(setUsername, 500)
   const router = useRouter()
 
-  // zod implementation here
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: '',
       email: '',
-      password: ''
-    }
+      password: '',
+    },
   })
 
   useEffect(() => {
     const checkUsernameUnique = async () => {
-      if (username) {
-        setIsCheckingUsername(true)
-        setUsernameMessage("")
-        try {
-          const response = await axios.get('/api/check-username-unique', {
-            params: {
-              username: username
-            }
-          })
-          setUsernameMessage(response.data.message)
-        } catch (error) {
-          const axiosError = error as AxiosError<ApiResponse>
-          setUsernameMessage(axiosError.response?.data.message || 'Error checking username')
-        } finally {
-          setIsCheckingUsername(false)
-        }
+      if (!username) return
+
+      setIsCheckingUsername(true)
+      setUsernameMessage("")
+
+      try {
+        const response = await axios.get('/api/check-username-unique', {
+          params: { username }
+        })
+        setUsernameMessage(response.data.message)
+      } catch (error) {
+        const axiosError = error as AxiosError<ApiResponse>
+        setUsernameMessage(
+          axiosError.response?.data.message || 'Error checking username'
+        )
+      } finally {
+        setIsCheckingUsername(false)
       }
     }
+
     checkUsernameUnique()
   }, [username])
 
@@ -64,101 +84,170 @@ const page = () => {
       toast.success(response.data.message)
       router.replace(`/verify/${username}`)
     } catch (error) {
-      console.log("Error during sign up", error);
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data.message || 'Sign up failed'
-      toast.error(errorMessage)
+      toast.error(
+        axiosError.response?.data.message || 'Sign up failed'
+      )
     } finally {
       setIsSubmitting(false)
     }
   }
 
-
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100" >
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-4xl mb-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-50 px-4 py-12">
+      <div className="mx-auto max-w-md space-y-8">
+
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             Join Secure Whisper
           </h1>
-          <p className="mb-4">Sign up to start your anonymous journey</p>
+          <p className="text-sm text-muted-foreground">
+            Create an account to receive anonymous, honest messages securely.
+          </p>
         </div>
-        <Form {...form} >
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-            <FormField
-              name="username"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your username" {...field}
-                      onChange={(e) => {
-                        field.onChange(e)
-                        debounced(e.target.value)
-                      }}
-                    />
-                  </FormControl>
-                    {isCheckingUsername &&<Spinner className="size-6" />}
-                    <p className={`text-sm ${usernameMessage.includes('available') ? 'text-green-500' : 'text-red-500'}` }>
-                       {usernameMessage}
-                    </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="Enter your email" {...field}
-                     
-                    />
-                  </FormControl>
+        {/* Card */}
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-green-600" />
+              Create your anonymous inbox
+            </CardTitle>
+            <CardDescription>
+              Your identity stays private. Only you can see the messages sent to you.
+            </CardDescription>
+          </CardHeader>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Enter your password" {...field}
-                    />
-                  </FormControl>
+          <Separator />
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <CardContent className="pt-6">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
 
-            <Button type="submit" disabled={isSubmitting} className="w-full">
-              {
-                isSubmitting ? (
-                  <>
-                   <Spinner />
-                   Please wait
-                  </>
-                ) : ('Sign Up')
-              }
-            </Button>
+                {/* Username */}
+                <FormField
+                  name="username"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Choose a unique username"
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e)
+                            debounced(e.target.value)
+                          }}
+                        />
+                      </FormControl>
 
-          </form>
-        </Form>
-        <div className="text-center mt-4">
-          <p>Already a member?{' '} <Link href={'/sign-in'} className="text-blue-800 hover:underline ">sign in</Link> </p>
+                      <div className="flex items-center gap-2 text-sm">
+                        {isCheckingUsername && (
+                          <Spinner className="h-4 w-4" />
+                        )}
+                        {usernameMessage && (
+                          <span
+                            className={
+                              usernameMessage.toLowerCase().includes("available")
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {usernameMessage}
+                          </span>
+                        )}
+                      </div>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Email */}
+                <FormField
+                  name="email"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Enter your email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Password */}
+                <FormField
+                  name="password"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Create a strong password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  className="w-full gap-2"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Spinner />
+                      Creating account...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="h-4 w-4" />
+                      Create account
+                    </>
+                  )}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+
+        {/* Footer */}
+        <div className="text-center space-y-2 text-sm">
+          <p className="text-muted-foreground">
+            Already have an account?
+          </p>
+          <Link
+            href="/sign-in"
+            className="font-medium text-blue-700 hover:underline cursor-pointer"
+          >
+            Sign in to Secure Whisper
+          </Link>
         </div>
+
+        <p className="text-center text-xs text-muted-foreground">
+          🔒 We never expose sender identities.  
+          Secure Whisper is built for honest, anonymous communication.
+        </p>
       </div>
     </div>
   )
 }
 
-export default page
+export default SignUpPage

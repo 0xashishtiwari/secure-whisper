@@ -1,35 +1,59 @@
-import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
-import { NextResponse } from "next/server";
+import { generateText } from "ai"
+import { google } from "@ai-sdk/google"
+import { NextResponse } from "next/server"
 
-export async function POST() {
-
-
+export async function GET() {
   try {
-    const prompt = `Create a list of three open-ended, engaging questions formatted as a single string.
-Each question should be separated by '||'.
+    const prompt = `
+You are generating content for an anonymous messaging platform.
 
-These questions are for an anonymous social messaging platform like Qooh.me and should be suitable for a diverse audience.
-Avoid personal or sensitive topics. Focus on universal themes that encourage friendly interaction.
+TASK:
+Generate exactly 3 open-ended, friendly questions.
 
-Example format:
-"What's a hobby you enjoy the most? || If you could travel anywhere in the world, where would you go? || What book or movie has had the biggest impact on your life and why?"`;
+RULES:
+- Do NOT include any explanation or extra text
+- Do NOT number the questions
+- Do NOT use quotes
+- Do NOT mention anonymity
+- Avoid personal, political, medical, or sensitive topics
+- Questions must be suitable for all ages and cultures
+- Encourage thoughtful, positive interaction
+
+FORMAT:
+Return a SINGLE LINE string.
+Separate each question using exactly: ||
+
+EXAMPLE FORMAT (do not repeat this text):
+What's a hobby you enjoy the most? || If you could travel anywhere in the world, where would you go? || What small thing makes your day better?
+`
 
     const result = await generateText({
-      model: google("gemini-2.5-flash"), // ✅ REAL, SUPPORTED MODEL
+      model: google("gemini-2.5-flash"),
       prompt,
-    });
+    })
+
+    // 🔹 Parse and clean suggestions
+    const suggestions = result.text
+      .split("||")
+      .map((s) => s.trim())
+      .filter(Boolean)
 
     return NextResponse.json({
-      suggestions: result.text,
-    });
-
+      success: true,
+      message: "Suggestions generated successfully",
+      data: {
+        suggestions,
+      },
+    })
   } catch (error) {
-    console.error(" Chat API Error:", error);
+    console.error("AI Suggest API Error:", error)
 
     return NextResponse.json(
-      { error: "Failed to generate response" },
+      {
+        success: false,
+        message: "Failed to generate message suggestions",
+      },
       { status: 500 }
-    );
+    )
   }
 }
