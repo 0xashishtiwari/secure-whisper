@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
+
 import Navbar from "@/components/ui/Navbar";
 
 const geistSans = Geist({
@@ -26,10 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <>
-    <Navbar />
-    {children}
-      </>
+      <div className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground`}>
+      <Navbar />
+      {children}
+    </div>
     
   );
 }

@@ -123,3 +123,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+#oneko {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+}

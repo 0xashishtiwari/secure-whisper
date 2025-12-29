@@ -4,7 +4,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "@/context/AuthProvider";
 import Navbar from "@/components/ui/Navbar";
-
+import Script from "next/script";
+import OnekoFix from "@/components/ui/OnekoFix";
 
 
 const geistSans = Geist({
@@ -33,15 +34,18 @@ export default function RootLayout({
     <html lang="en">
      
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground`}
       > 
         <AuthProvider>
     
-         
+         <main className="flex-1 overflow-y-auto">
           {children}
+        </main>
+
           <Toaster position="top-center" />
         </AuthProvider>
-        <script src="/oneko.js"></script>
+       <Script src="/oneko.js" strategy="afterInteractive"></Script>
+       <OnekoFix/>
       </body>
     </html>
   );
