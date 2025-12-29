@@ -6,6 +6,7 @@ import AuthProvider from "@/context/AuthProvider";
 import Navbar from "@/components/ui/Navbar";
 
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
   title: "Secure Whisper",
   description:
     "Anonymous Messaging Platform for Secure and Private Communication",
+    
 };
 
 export default function RootLayout({
@@ -29,6 +31,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+     
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       > 
@@ -38,6 +41,7 @@ export default function RootLayout({
           {children}
           <Toaster position="top-center" />
         </AuthProvider>
+        <script src="/oneko.js"></script>
       </body>
     </html>
   );
