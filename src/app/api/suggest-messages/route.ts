@@ -7,8 +7,11 @@ export async function GET() {
     const prompt = `
 You are generating content for an anonymous messaging platform.
 
+CONTEXT:
+The recent messages show a soft, thoughtful tone — quiet care, curiosity, emotional warmth, and reflective moments without pressure or urgency.
+
 TASK:
-Generate exactly 3 open-ended, friendly questions.
+Generate exactly 3 open-ended, friendly questions that feel natural, calm, and emotionally considerate.
 
 RULES:
 - Do NOT include any explanation or extra text
@@ -17,14 +20,16 @@ RULES:
 - Do NOT mention anonymity
 - Avoid personal, political, medical, or sensitive topics
 - Questions must be suitable for all ages and cultures
-- Encourage thoughtful, positive interaction
+- Keep the tone gentle, reassuring, and positive
+- Encourage reflection, comfort, or light curiosity without demanding deep disclosure
 
 FORMAT:
 Return a SINGLE LINE string.
 Separate each question using exactly: ||
 
 EXAMPLE FORMAT (do not repeat this text):
-What's a hobby you enjoy the most? || If you could travel anywhere in the world, where would you go? || What small thing makes your day better?
+What’s something that’s been quietly bringing you comfort lately? || What kind of moment helps you feel most at ease during the day? || Is there a simple thought that’s been staying with you recently?
+
 `
 
     const result = await generateText({
