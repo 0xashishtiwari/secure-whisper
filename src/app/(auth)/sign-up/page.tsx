@@ -5,11 +5,16 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useDebounceCallback } from 'usehooks-ts'
+import { useDebounceCallback } from "usehooks-ts"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import axios, { AxiosError } from "axios"
-import { ShieldCheck, UserPlus } from "lucide-react"
+import {
+  ShieldCheck,
+  UserPlus,
+  Eye,
+  EyeOff
+} from "lucide-react"
 
 import { signUpSchema } from "@/schemas/signUpSchema"
 import { ApiResponse } from "@/types/ApiResponse"
@@ -39,6 +44,7 @@ const SignUpPage = () => {
   const [usernameMessage, setUsernameMessage] = useState("")
   const [isCheckingUsername, setIsCheckingUsername] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const debounced = useDebounceCallback(setUsername, 500)
   const router = useRouter()
@@ -46,12 +52,13 @@ const SignUpPage = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      username: '',
-      email: '',
-      password: '',
+      username: "",
+      email: "",
+      password: "",
     },
   })
 
+  /* Check username availability */
   useEffect(() => {
     const checkUsernameUnique = async () => {
       if (!username) return
@@ -60,14 +67,14 @@ const SignUpPage = () => {
       setUsernameMessage("")
 
       try {
-        const response = await axios.get('/api/check-username-unique', {
-          params: { username }
+        const response = await axios.get("/api/check-username-unique", {
+          params: { username },
         })
         setUsernameMessage(response.data.message)
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>
         setUsernameMessage(
-          axiosError.response?.data.message || 'Error checking username'
+          axiosError.response?.data.message || "Error checking username"
         )
       } finally {
         setIsCheckingUsername(false)
@@ -80,13 +87,13 @@ const SignUpPage = () => {
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true)
     try {
-      const response = await axios.post<ApiResponse>('/api/sign-up', data)
+      const response = await axios.post<ApiResponse>("/api/sign-up", data)
       toast.success(response.data.message)
       router.replace(`/verify/${username}`)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(
-        axiosError.response?.data.message || 'Sign up failed'
+        axiosError.response?.data.message || "Sign up failed"
       )
     } finally {
       setIsSubmitting(false)
@@ -108,7 +115,7 @@ const SignUpPage = () => {
         </div>
 
         {/* Card */}
-        <Card className="shadow-md">
+        <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <ShieldCheck className="h-5 w-5 text-green-600" />
@@ -138,6 +145,7 @@ const SignUpPage = () => {
                       <FormControl>
                         <Input
                           placeholder="Choose a unique username"
+                          className="focus-visible:ring-2 focus-visible:ring-blue-500"
                           {...field}
                           onChange={(e) => {
                             field.onChange(e)
@@ -179,6 +187,7 @@ const SignUpPage = () => {
                         <Input
                           type="email"
                           placeholder="Enter your email"
+                          className="focus-visible:ring-2 focus-visible:ring-blue-500"
                           {...field}
                         />
                       </FormControl>
@@ -187,7 +196,7 @@ const SignUpPage = () => {
                   )}
                 />
 
-                {/* Password */}
+                {/* Password with Eye Toggle */}
                 <FormField
                   name="password"
                   control={form.control}
@@ -195,20 +204,37 @@ const SignUpPage = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Create a strong password"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Create a strong password"
+                            className="pr-10 focus-visible:ring-2 focus-visible:ring-blue-500"
+                            {...field}
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-gray-900 transition"
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
+                {/* Submit */}
                 <Button
                   type="submit"
-                  className="w-full gap-2"
+                  className="w-full gap-2 transition-all hover:scale-[1.01]"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -235,7 +261,7 @@ const SignUpPage = () => {
           </p>
           <Link
             href="/sign-in"
-            className="font-medium text-blue-700 hover:underline cursor-pointer"
+            className="font-medium text-blue-700 hover:underline"
           >
             Sign in to Secure Whisper
           </Link>

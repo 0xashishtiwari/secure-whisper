@@ -11,21 +11,19 @@ import {
   Link,
 } from "@react-email/components";
 
-interface VerificationEmailProps {
-  username: string;
-  otp: string;
+interface ResetPasswordLinkProps {
+  resetLink: string;
 }
 
 const currentYear = new Date().getFullYear();
 
-export default function VerificationEmail({
-  username,
-  otp,
-}: VerificationEmailProps) {
+export default function ResetPasswordLink({
+  resetLink,
+}: ResetPasswordLinkProps) {
   return (
     <Html lang="en">
       <Head>
-        <title>Secure Whisper – Verify your email</title>
+        <title>Secure Whisper – Reset your password</title>
 
         <Font
           fontFamily="Inter"
@@ -34,11 +32,12 @@ export default function VerificationEmail({
             url: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTcviYw.woff2",
             format: "woff2",
           }}
-          fontWeight={400}
         />
       </Head>
 
-      <Preview>Your Secure Whisper verification code: {otp}</Preview>
+      <Preview>
+        Reset your Secure Whisper password (expires in 10 minutes)
+      </Preview>
 
       {/* Page background */}
       <Section
@@ -82,52 +81,95 @@ export default function VerificationEmail({
                 color: "#111827",
               }}
             >
-              Verify your email
+              Reset your password
             </Heading>
           </Row>
 
-          {/* Greeting */}
+          {/* Message */}
           <Row>
             <Text
               style={{
                 fontSize: "15px",
                 lineHeight: "24px",
-                margin: "0 0 16px",
+                margin: "0 0 20px",
                 color: "#374151",
               }}
             >
-              Hi <strong>{username}</strong>, <br />
-              Use the code below to finish setting up your Secure Whisper
-              account.
+              We received a request to reset your Secure Whisper password.
+              Click the button below to choose a new password and regain access
+              to your account.
             </Text>
           </Row>
 
-          {/* OTP Box */}
+          {/* Expiry Notice */}
           <Row>
             <Section
               style={{
                 backgroundColor: "#eef2ff",
-                borderRadius: "10px",
-                padding: "20px",
-                textAlign: "center",
-                margin: "24px 0",
+                borderRadius: "8px",
+                padding: "14px 16px",
+                marginBottom: "24px",
               }}
             >
               <Text
                 style={{
-                  fontSize: "32px",
-                  fontWeight: "700",
-                  letterSpacing: "6px",
+                  fontSize: "14px",
+                  color: "#3730a3",
                   margin: "0",
-                  color: "#4338ca",
+                  textAlign: "center",
+                  fontWeight: "500",
                 }}
               >
-                {otp}
+                ⏳ This password reset link will expire in{" "}
+                <strong>10 minutes</strong> for your security.
               </Text>
             </Section>
           </Row>
 
-          {/* Expiry */}
+          {/* Reset Button */}
+          <Row>
+            <Section style={{ textAlign: "center", margin: "24px 0" }}>
+              <Link
+                href={resetLink}
+                style={{
+                  display: "inline-block",
+                  backgroundColor: "#4338ca",
+                  color: "#ffffff",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  padding: "14px 36px",
+                  borderRadius: "8px",
+                }}
+              >
+                Reset Password
+              </Link>
+            </Section>
+          </Row>
+
+          {/* Fallback link */}
+          <Row>
+            <Text
+              style={{
+                fontSize: "13px",
+                color: "#6b7280",
+                textAlign: "center",
+                margin: "0 0 24px",
+              }}
+            >
+              If the button doesn’t work, copy and paste this link into your
+              browser:
+              <br />
+              <Link
+                href={resetLink}
+                style={{ color: "#4338ca", wordBreak: "break-all" }}
+              >
+                {resetLink}
+              </Link>
+            </Text>
+          </Row>
+
+          {/* Security note */}
           <Row>
             <Text
               style={{
@@ -136,12 +178,10 @@ export default function VerificationEmail({
                 margin: "0 0 24px",
               }}
             >
-              This code expires shortly for your security. If you didn’t request
-              this email, you can safely ignore it.
+              If you didn’t request a password reset, you can safely ignore
+              this email. Your account will remain secure.
             </Text>
           </Row>
-
-         
 
           {/* Footer */}
           <Row>
