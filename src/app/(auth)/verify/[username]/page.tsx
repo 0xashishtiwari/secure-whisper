@@ -4,32 +4,24 @@ import { verifySchema } from '@/schemas/verifySchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { toast } from "sonner"
+import { toast } from 'sonner'
 import { z } from 'zod'
 import axios, { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
 import { useState } from 'react'
-import { ShieldCheck, MailCheck } from 'lucide-react'
+import { KeyRound, MailCheck, ArrowLeft } from 'lucide-react'
 
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage
+  FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import Link from 'next/link'
 
 const VerifyAccount = () => {
   const router = useRouter()
@@ -38,9 +30,7 @@ const VerifyAccount = () => {
 
   const form = useForm<z.infer<typeof verifySchema>>({
     resolver: zodResolver(verifySchema),
-    defaultValues: {
-      code: '',
-    },
+    defaultValues: { code: '' },
   })
 
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
@@ -57,12 +47,12 @@ const VerifyAccount = () => {
         return
       }
 
-      toast.success(response.data.message)
+      toast.success('Your inbox is now active')
       router.replace('/sign-in')
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(
-        axiosError.response?.data.message || 'Error verifying account'
+        axiosError.response?.data.message || 'Verification failed'
       )
     } finally {
       setLoading(false)
@@ -70,85 +60,89 @@ const VerifyAccount = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-50 px-4 py-12">
-      <div className="mx-auto max-w-md space-y-8">
+    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-12">
 
-        {/* Header */}
-        <div className="text-center space-y-3">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Verify your Secure Whisper account
+        {/* Intro */}
+        <div className="space-y-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200">
+            <KeyRound className="h-6 w-6 text-gray-500" />
+          </div>
+
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Unlock your inbox
           </h1>
-          <p className="text-sm text-muted-foreground">
-            We’ve sent a verification code to your email to keep your account secure.
+
+          <p className="text-muted-foreground max-w-sm">
+            We sent a 6-digit code to your email.
+            Enter it below to activate your private space.
           </p>
         </div>
 
-        {/* Card */}
-        <Card className="shadow-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-green-600" />
-              Account verification
-            </CardTitle>
-            <CardDescription>
-              Enter the 6-digit code we sent to your email address.
-            </CardDescription>
-          </CardHeader>
+        {/* Form */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
 
-          <Separator />
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      placeholder="••••••"
+                      maxLength={6}
+                      className="h-12 text-center text-xl tracking-[0.4em]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <CardContent className="pt-6">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                <FormField
-                  control={form.control}
-                  name="code"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Verification code</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter verification code"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <Button
+              type="submit"
+              className="w-full h-11"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Spinner />
+                  Verifying…
+                </>
+              ) : (
+                <>
+                  <MailCheck className="h-4 w-4 mr-2" />
+                  Activate inbox
+                </>
+              )}
+            </Button>
+          </form>
+        </Form>
 
-                <Button
-                  type="submit"
-                  className="w-full gap-2"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Spinner />
-                      Verifying...
-                    </>
-                  ) : (
-                    <>
-                      <MailCheck className="h-4 w-4" />
-                      Verify account
-                    </>
-                  )}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+        {/* Footer */}
+        <div className="space-y-4 text-sm text-muted-foreground">
+          <Link
+            href="/sign-up"
+            className="inline-flex items-center gap-1 underline"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Go back
+          </Link>
 
-        {/* Footer reassurance */}
-        <p className="text-center text-xs text-muted-foreground">
-          🔒 This step helps protect your anonymous inbox.  
-          Secure Whisper never reveals your identity.
-        </p>
+          <p className="text-xs">
+            🔒 Verification ensures only you can access your anonymous inbox.
+            We never reveal sender identities.
+          </p>
+        </div>
       </div>
-    </div>
+    </main>
   )
 }
 

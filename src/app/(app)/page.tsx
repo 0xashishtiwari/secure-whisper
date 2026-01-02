@@ -3,94 +3,103 @@
 import React from "react";
 import Link from "next/link";
 import messages from "@/messages.json";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import Footer from "@/components/ui/Footer";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import Footer from "@/components/ui/Footer";
-import { ShieldCheck, MessageCircle, Link as LinkIcon } from "lucide-react";
+import {
+  EyeOff,
+  MessageSquareQuote,
+  ArrowRight,
+  Lock
+} from "lucide-react";
 
 const Home = () => {
   const autoplay = React.useRef(
-    Autoplay({ delay: 3500, stopOnInteraction: false })
+    Autoplay({ delay: 4200, stopOnInteraction: false })
   );
 
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-indigo-50 via-white to-gray-50">
+    <main className="min-h-screen bg-white text-gray-900">
 
       {/* HERO */}
-      <section className="relative px-6 py-28 text-center">
-        <div className="mx-auto max-w-5xl space-y-6">
-          <span className="inline-block rounded-full bg-indigo-100 px-4 py-1 text-sm font-medium text-indigo-700">
-            Anonymous • Secure • Honest
-          </span>
+      <section className="px-6 pt-32 pb-24">
+        <div className="mx-auto max-w-4xl text-center space-y-8">
 
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">
-            Secure Whisper
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-gray-200">
+            <EyeOff className="h-6 w-6 text-gray-500" />
+          </div>
+
+          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
+            Things you’d never say
+            <br />
+            <span className="text-gray-400">
+              can be said here
+            </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            An anonymous messaging platform where honesty comes first.
-            No profiles. No tracking. Just real messages — delivered securely.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Secure Whisper is a calm space for honest messages —
+            no names, no profiles, no pressure.
           </p>
 
           <div className="flex justify-center gap-4 pt-6">
             <Link href="/sign-up">
-              <Button size="lg" className="px-8 cursor-pointer">
+              <Button size="lg" className="px-8">
                 Create your inbox
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
+
             <Link href="/sign-in">
-              <Button  size="lg" variant="outline" className="cursor-pointer">
+              <Button size="lg" variant="outline">
                 Sign in
               </Button>
             </Link>
           </div>
+
+          <p className="text-xs text-muted-foreground pt-6">
+            Anonymous by default • No tracking • No ads
+          </p>
         </div>
       </section>
 
-      {/* CAROUSEL */}
-      <section className="px-6 py-20">
-        <div className="max-w-6xl mx-auto text-center space-y-12">
-          <div className="space-y-3">
-            <h2 className="text-3xl font-semibold text-gray-900">
-              Words people never say out loud
+      {/* WHISPERS */}
+      <section className="px-6 py-24 bg-gray-50">
+        <div className="mx-auto max-w-6xl space-y-12 text-center">
+
+          <div className="space-y-2">
+            <MessageSquareQuote className="mx-auto h-7 w-7 text-gray-400" />
+            <h2 className="text-2xl font-medium">
+              Messages that were never meant to be public
             </h2>
             <p className="text-muted-foreground">
-              Secure Whisper gives people the courage to be honest.
+              Sent quietly. Read privately.
             </p>
           </div>
 
           <Carousel
             plugins={[autoplay.current]}
             opts={{ align: "start", loop: true }}
-            className="w-full max-w-4xl mx-auto"
-            onMouseEnter={autoplay.current.stop}
-            onMouseLeave={autoplay.current.reset}
+            className="max-w-5xl mx-auto"
           >
             <CarouselContent>
               {messages.map((message, index) => (
                 <CarouselItem
                   key={index}
-                  className="md:basis-1/2 lg:basis-1/3 px-3"
+                  className="md:basis-1/2 lg:basis-1/3 px-4"
                 >
-                  <Card className="h-full bg-white/80 backdrop-blur border shadow-sm hover:shadow-md transition">
-                    <CardContent className="flex flex-col justify-between p-6 h-full">
-                      <div>
-                        <h3 className="font-medium text-base text-gray-900 mb-2">
-                          {message.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {message.content}
-                        </p>
-                      </div>
-                      <span className="text-xs text-muted-foreground mt-4">
+                  <Card className="border bg-white hover:shadow-sm transition">
+                    <CardContent className="p-6 space-y-4 text-left">
+                      <p className="text-sm text-gray-700">
+                        “{message.content}”
+                      </p>
+                      <span className="text-xs text-muted-foreground">
                         {message.received}
                       </span>
                     </CardContent>
@@ -98,80 +107,62 @@ const Home = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-
-            <CarouselPrevious />
-            <CarouselNext />
           </Carousel>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="px-6 py-24 bg-white border-t">
-        <div className="max-w-5xl mx-auto space-y-14">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl font-semibold text-gray-900">
-              How it works
-            </h2>
-            <p className="text-muted-foreground">
-              Three simple steps to receive anonymous messages
+      {/* HOW IT FEELS */}
+      <section className="px-6 py-28">
+        <div className="mx-auto max-w-4xl grid gap-16 md:grid-cols-3 text-center">
+
+          <div className="space-y-4">
+            <Lock className="mx-auto h-7 w-7 text-gray-400" />
+            <h3 className="font-medium">No identity</h3>
+            <p className="text-sm text-muted-foreground">
+              We don’t know who you are.
+              That’s intentional.
             </p>
           </div>
 
-          <div className="grid gap-10 md:grid-cols-3">
-            <div className="text-center space-y-4">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
-                <LinkIcon />
-              </div>
-              <h3 className="font-medium text-gray-900">
-                Create your link
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Sign up and get a unique Secure Whisper link.
-              </p>
-            </div>
+          <div className="space-y-4">
+            <EyeOff className="mx-auto h-7 w-7 text-gray-400" />
+            <h3 className="font-medium">No pressure</h3>
+            <p className="text-sm text-muted-foreground">
+              No likes. No comments.
+              Just words.
+            </p>
+          </div>
 
-            <div className="text-center space-y-4">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
-                <MessageCircle />
-              </div>
-              <h3 className="font-medium text-gray-900">
-                Share it anywhere
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Post it publicly or send it privately.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                <ShieldCheck />
-              </div>
-              <h3 className="font-medium text-gray-900">
-                Receive messages anonymously
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Messages arrive without revealing who sent them.
-              </p>
-            </div>
+          <div className="space-y-4">
+            <MessageSquareQuote className="mx-auto h-7 w-7 text-gray-400" />
+            <h3 className="font-medium">Just honesty</h3>
+            <p className="text-sm text-muted-foreground">
+              Messages arrive untouched.
+              Nothing added.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* PRIVACY PROMISE */}
-      <section className="px-6 py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-3xl mx-auto text-center space-y-4">
-          <ShieldCheck className="mx-auto h-10 w-10 text-emerald-600" />
-          <h2 className="text-2xl font-semibold text-gray-900">
-            Privacy is the foundation
+      {/* FINAL CTA */}
+      <section className="px-6 py-28 bg-gray-50 text-center">
+        <div className="mx-auto max-w-2xl space-y-6">
+          <h2 className="text-3xl font-semibold">
+            Create a place for honesty
           </h2>
           <p className="text-muted-foreground">
-            Secure Whisper never stores sender identities, never exposes IPs,
-            and never tracks users across the web. Your inbox is yours alone.
+            Your anonymous inbox is ready in seconds.
           </p>
+
+          <Link href="/sign-up">
+            <Button size="lg" className="px-10">
+              Get started
+            </Button>
+          </Link>
         </div>
       </section>
 
-      <Footer />
+     
     </main>
   );
 };

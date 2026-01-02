@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { Mail, ShieldCheck } from 'lucide-react'
+import { Mail, ArrowLeft } from 'lucide-react'
 
 import { forgotPasswordSchema } from '@/schemas/forgotPasswordSchema'
 import { ApiResponse } from '@/types/ApiResponse'
@@ -18,20 +18,11 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 
 const ForgotPassword = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -43,15 +34,17 @@ const ForgotPassword = () => {
   })
 
   const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
-    setIsSubmitting(true)
     try {
+      setIsSubmitting(true)
       const response = await axios.post<ApiResponse>(
         '/api/reset-link',
         { email: data.email }
       )
 
-      toast.success(response.data.message || 'Verification email sent')
-      
+      toast.success(
+        response.data.message ||
+        'If this email exists, you’ll receive instructions shortly.'
+      )
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(
@@ -63,95 +56,85 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-50 px-4 py-12">
-      <div className="mx-auto max-w-md space-y-8">
+    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-12">
 
-        {/* Header */}
-        <div className="text-center space-y-3">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Forgot your password?
+        {/* Intro */}
+        <div className="space-y-4">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Find your way back
           </h1>
-          <p className="text-sm text-muted-foreground">
-            Enter your email and we’ll send you a verification code.
+          <p className="text-muted-foreground max-w-sm">
+            Enter the email you used.
+            We’ll quietly send you a link to reset your password.
           </p>
         </div>
 
-        {/* Card */}
-        <Card className="shadow-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-green-600" />
-              Password recovery
-            </CardTitle>
-            <CardDescription>
-              Your privacy is protected. We never expose account activity.
-            </CardDescription>
-          </CardHeader>
+        {/* Form */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
 
-          <Separator />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="email"
+                        placeholder="your@email.com"
+                        className="pl-10 h-11"
+                        {...field}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <CardContent className="pt-6">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email address</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="you@example.com"
-                          type="email"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  className="w-full gap-2"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Spinner />
-                      Sending…
-                    </>
-                  ) : (
-                    <>
-                      <Mail className="h-4 w-4" />
-                      Send reset link
-                    </>
-                  )}
-                </Button>
-
-                <div className="text-sm text-center">
-                  <Link
-                    href="/sign-in"
-                    className="font-medium text-blue-700 hover:underline"
-                  >
-                    Back to sign in
-                  </Link>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+            <Button
+              type="submit"
+              className="w-full h-11"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Spinner />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  <Mail className="h-4 w-4 mr-2" />
+                  Send reset link
+                </>
+              )}
+            </Button>
+          </form>
+        </Form>
 
         {/* Footer */}
-        <p className="text-center text-xs text-muted-foreground">
-          🔒 Secure Whisper never stores sender identity.
-          Your privacy always comes first.
-        </p>
+        <div className="space-y-4 text-sm text-muted-foreground">
+          <Link
+            href="/sign-in"
+            className="inline-flex items-center gap-1 underline"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to sign in
+          </Link>
+
+          <p className="text-xs">
+            🔒 If an account exists, only you will receive the email.
+            We don’t reveal account activity.
+          </p>
+        </div>
       </div>
-    </div>
+    </main>
   )
 }
 

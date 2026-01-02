@@ -6,6 +6,7 @@ import AuthProvider from "@/context/AuthProvider";
 import Navbar from "@/components/ui/Navbar";
 import Script from "next/script";
 import OnekoFix from "@/components/ui/OnekoFix";
+import Footer from "@/components/ui/Footer";
 
 
 const geistSans = Geist({
@@ -37,14 +38,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground`}
       > 
         <AuthProvider>
+        <Navbar />
     
          <main className="flex-1 overflow-y-auto">
           {children}
         </main>
 
           <Toaster position="top-center" />
-        </AuthProvider>
        <Script src="/oneko.js" strategy="afterInteractive"></Script>
+       <Footer/>
+        </AuthProvider>
        <OnekoFix/>
       </body>
     </html>
