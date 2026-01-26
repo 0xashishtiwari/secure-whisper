@@ -20,10 +20,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Secure Whisper",
+  title: "Secure Whisper – Anonymous & Private Messaging",
   description:
-    "Anonymous Messaging Platform for Secure and Private Communication",
-    
+    "Secure Whisper lets anyone create a private link to receive anonymous messages securely. No sign-ups, no tracking, and complete privacy.",
+  verification: {
+    google: "Y6Aq-uAVdv0fEpTc9miNGQKPOhUHrU-EMr1YacYdERk",
+  },
 };
 
 export default function RootLayout({
