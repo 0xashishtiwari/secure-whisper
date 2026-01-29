@@ -39,7 +39,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground relative`}
       >
         {/* 🔽 BACKGROUND LAYER (lowest) */}
-        <AuroraBackground className="fixed inset-0 -z-50 pointer-events-none opacity-60" />
+        <AuroraBackground className="fixed inset-0 -z-50 pointer-events-none opacity-60"><></></AuroraBackground>
 
         {/* 🔼 ONEKO (top-most) */}
         <Script src="/oneko.js" strategy="afterInteractive" />
