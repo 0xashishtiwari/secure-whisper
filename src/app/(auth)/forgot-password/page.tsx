@@ -56,17 +56,17 @@ const ForgotPassword = () => {
   }
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+    <main className="min-h-screen  flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-12">
 
         {/* Intro */}
-        <div className="space-y-4">
-          <h1 className="text-3xl font-semibold tracking-tight">
+        <div className="space-y-4 flex justify-center flex-col items-center">
+          <h1 className="text-4xl font-semibold tracking-tight">
             Find your way back
           </h1>
-          <p className="text-muted-foreground max-w-sm">
-            Enter the email you used.
-            We’ll quietly send you a link to reset your password.
+          <p className="text-muted-foreground max-w-sm tracking-tight text-center color-gray-600">
+            Enter the email associated with your account, and we’ll
+            send you a link to reset your password.
           </p>
         </div>
 
@@ -87,7 +87,7 @@ const ForgotPassword = () => {
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="email"
-                        placeholder="your@email.com"
+                        placeholder="Enter your email"
                         className="pl-10 h-11"
                         {...field}
                       />
@@ -100,7 +100,7 @@ const ForgotPassword = () => {
 
             <Button
               type="submit"
-              className="w-full h-11"
+              className="w-full h-11  cursor-pointer"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -119,18 +119,18 @@ const ForgotPassword = () => {
         </Form>
 
         {/* Footer */}
-        <div className="space-y-4 text-sm text-muted-foreground">
+        <div className="space-y-4 text-sm text-muted-foreground flex items-center flex-col">
           <Link
             href="/sign-in"
-            className="inline-flex items-center gap-1 underline"
+            className="inline-flex items-center gap-1 text-sky-600 hover:underline"
           >
-            <ArrowLeft className="h-4 w-4" />
+           
             Back to sign in
           </Link>
 
-          <p className="text-xs">
-            🔒 If an account exists, only you will receive the email.
-            We don’t reveal account activity.
+          <p className="text-center w-fit text-gray-600 tracking-wider">
+             If an account exists for the email provided, you will receive
+             a password reset link shortly.
           </p>
         </div>
       </div>

@@ -95,17 +95,17 @@ const Page = () => {
   };
 
   return (
-    <main className="min-h-screen flex flex-col bg-white">
+    <main className="min-h-screen flex flex-col ">
       <div className="flex-1 mx-auto w-full max-w-5xl px-4 py-14 space-y-14">
 
         {/* Header */}
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold tracking-tight">
-            Your inbox
+            Secure Whisper Inbox
           </h1>
-          <p className="text-muted-foreground max-w-xl">
-            This is your private space. Messages arrive anonymously and only you
-            can read them.
+          <p className="text-muted-foreground max-w-3xl">
+            This is your private space. Here you can manage your anonymous
+            messages and settings.
           </p>
         </div>
 
@@ -118,7 +118,7 @@ const Page = () => {
 
           <div className="flex gap-2">
             <Input value={profileUrl} disabled />
-            <Button variant="outline" onClick={copyToClipboard} className="gap-2">
+            <Button variant="outline" onClick={copyToClipboard} className="gap-2 cursor-pointer">
               <Copy className="h-4 w-4" />
               Copy
             </Button>
@@ -136,6 +136,7 @@ const Page = () => {
 
           <Switch
             checked={acceptMessages}
+            className="cursor-pointer"
             onCheckedChange={async () => {
               try {
                 setIsSwitchLoading(true);
@@ -176,6 +177,7 @@ const Page = () => {
             <div className="grid gap-4">
               {messages.map((message) => (
                 <MessageCard
+                
                   key={message._id.toString()}
                   message={message}
                   onMessageDelete={(id) =>

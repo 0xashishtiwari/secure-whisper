@@ -49,7 +49,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   }
 
   return (
-    <Card className="relative border bg-white shadow-sm transition hover:shadow-md">
+    <Card className="relative border bg-neutral-50 shadow-sm hover:shadow-md transition-shadow ">
       <CardHeader className="flex flex-row items-start justify-between gap-4 pb-3">
         {/* Left meta */}
         <div className="space-y-1">
@@ -68,7 +68,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
             <Button
               size="icon"
               variant="ghost"
-              className="text-muted-foreground hover:text-red-600"
+              className="text-muted-foreground hover:text-red-600 cursor-pointer"
               disabled={isDeleting}
             >
               <X className="h-4 w-4" />

@@ -14,7 +14,8 @@ import {
   EyeOff,
   UserPlus,
   Lock,
-  AtSign
+  AtSign,
+  User
 } from "lucide-react"
 
 import { signUpSchema } from "@/schemas/signUpSchema"
@@ -91,17 +92,17 @@ const SignUpPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+    <main className="min-h-screen  flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-12">
 
         {/* Intro */}
-        <div className="space-y-4">
+        <div className="space-y-4 flex justify-center flex-col items-center">
           <h1 className="text-3xl font-semibold tracking-tight">
-            Create a quiet place
+            Create a secure whisper inbox
           </h1>
-          <p className="text-muted-foreground max-w-sm">
-            This will be your anonymous inbox —
-            a place where people can speak freely.
+          <p className="text-muted-foreground max-w-sm text-center">
+            This will be your anonymous inbox 
+          
           </p>
         </div>
 
@@ -160,12 +161,15 @@ const SignUpPage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
+                     <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       type="email"
-                      placeholder="Your email (only for you)"
-                      className="h-11"
+                      placeholder="Enter your email"
+                      className=" pl-10 h-11"
                       {...field}
                     />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +187,7 @@ const SignUpPage = () => {
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Create a password"
+                        placeholder="Create a strong password"
                         className="pl-10 pr-10 h-11"
                         {...field}
                       />
@@ -208,7 +212,7 @@ const SignUpPage = () => {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full h-11"
+              className="w-full h-11  cursor-pointer"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -227,17 +231,17 @@ const SignUpPage = () => {
         </Form>
 
         {/* Footer */}
-        <div className="space-y-4 text-sm text-muted-foreground">
-          <p>
+        <div className="space-y-4 text-sm text-muted-foreground flex flex-col items-center">
+          <p className="text-center">
             Already have a place?{" "}
-            <Link href="/sign-in" className="underline">
-              Sign in
+            <Link href="/sign-in" className="text-sky-600 hover:underline">
+              sign in
             </Link>
           </p>
 
-          <p className="text-xs">
-            🔒 We never reveal who sends messages.
-            Your inbox belongs only to you.
+          <p className="text-xs text-center">
+            
+            Your inbox belongs only to you and nobody else.
           </p>
         </div>
       </div>

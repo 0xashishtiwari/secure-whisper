@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import messages from "@/messages.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import Footer from "@/components/ui/Footer";
+import React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -16,8 +15,10 @@ import {
   EyeOff,
   MessageSquareQuote,
   ArrowRight,
-  Lock
+  Lock,
 } from "lucide-react";
+import { LayoutTextFlip } from "@/components/ui/layout-text-flip";
+import { motion } from "motion/react";
 
 const Home = () => {
   const autoplay = React.useRef(
@@ -25,58 +26,80 @@ const Home = () => {
   );
 
   return (
-    <main className="min-h-screen bg-white text-gray-900">
-
+    <main className="min-h-screen  text-foreground">
       {/* HERO */}
-      <section className="px-6 pt-32 pb-24">
+      <section className="px-6 pt-24 sm:pt-32 pb-20 sm:pb-24">
         <div className="mx-auto max-w-4xl text-center space-y-8">
+          <div className="relative mx-auto flex max-w-3xl flex-col items-center">
+            {/* Icon */}
+            <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full
+              border border-border/60 bg-background/60 backdrop-blur
+              shadow-sm">
+              <EyeOff className="h-6 w-6 text-muted-foreground" />
+            </div>
 
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-gray-200">
-            <EyeOff className="h-6 w-6 text-gray-500" />
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center gap-2"
+            >
+              <h1>
+                <LayoutTextFlip
+                  text="Things you’d never say"
+                  words={[
+                    "out loud everywhere",
+                    "in public spaces",
+                    "your name attached",
+                    "zero fear involved",
+                    "no filters applied",
+                  ]}
+
+                  className="text-3xl sm:text-4xl font-bold tracking-tight"
+                />
+              </h1>
+            </motion.div>
+
+            {/* Subtext */}
+            <p className="mt-6 max-w-xl text-base sm:text-lg
+              text-muted-foreground leading-relaxed">
+              Honest messages, without the weight of identity.
+              <span className="mt-2 block font-medium text-foreground">
+                Anonymous by design.
+              </span>
+            </p>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
-            Things you’d never say
-            <br />
-            <span className="text-gray-400">
-              can be said here
-            </span>
-          </h1>
-
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Secure Whisper is a calm space for honest messages —
-            no names, no profiles, no pressure.
-          </p>
-
+          {/* CTA */}
           <div className="flex justify-center gap-4 pt-6">
             <Link href="/sign-up">
-              <Button size="lg" className="px-8">
+              <Button size="lg" className="px-8 flex items-center gap-2 cursor-pointer">
                 Create your inbox
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
 
             <Link href="/sign-in">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="px-8 cursor-pointer">
                 Sign in
               </Button>
             </Link>
           </div>
 
-          <p className="text-xs text-muted-foreground pt-6">
-            Anonymous by default • No tracking • No ads
+          <p className="pt-6 text-xs text-muted-foreground">
+            Anonymous by default • No tracking • No ads. Ever.
           </p>
         </div>
       </section>
 
       {/* WHISPERS */}
-      <section className="px-6 py-24 bg-gray-50">
+      <section className="px-6 py-24 bg-muted/40">
         <div className="mx-auto max-w-6xl space-y-12 text-center">
-
           <div className="space-y-2">
-            <MessageSquareQuote className="mx-auto h-7 w-7 text-gray-400" />
+            <MessageSquareQuote className="mx-auto h-7 w-7 text-muted-foreground" />
             <h2 className="text-2xl font-medium">
-              Messages that were never meant to be public
+              Messages never meant to be public
             </h2>
             <p className="text-muted-foreground">
               Sent quietly. Read privately.
@@ -86,7 +109,7 @@ const Home = () => {
           <Carousel
             plugins={[autoplay.current]}
             opts={{ align: "start", loop: true }}
-            className="max-w-5xl mx-auto"
+            className="mx-auto max-w-5xl"
           >
             <CarouselContent>
               {messages.map((message, index) => (
@@ -94,9 +117,10 @@ const Home = () => {
                   key={index}
                   className="md:basis-1/2 lg:basis-1/3 px-4"
                 >
-                  <Card className="border bg-white hover:shadow-sm transition">
+                  <Card className="border bg-background/80 backdrop-blur
+                    hover:shadow-sm transition">
                     <CardContent className="p-6 space-y-4 text-left">
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm">
                         “{message.content}”
                       </p>
                       <span className="text-xs text-muted-foreground">
@@ -111,12 +135,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* HOW IT FEELS */}
+      {/* PRINCIPLES */}
       <section className="px-6 py-28">
         <div className="mx-auto max-w-4xl grid gap-16 md:grid-cols-3 text-center">
-
           <div className="space-y-4">
-            <Lock className="mx-auto h-7 w-7 text-gray-400" />
+            <Lock className="mx-auto h-7 w-7 text-muted-foreground" />
             <h3 className="font-medium">No identity</h3>
             <p className="text-sm text-muted-foreground">
               We don’t know who you are.
@@ -125,7 +148,7 @@ const Home = () => {
           </div>
 
           <div className="space-y-4">
-            <EyeOff className="mx-auto h-7 w-7 text-gray-400" />
+            <EyeOff className="mx-auto h-7 w-7 text-muted-foreground" />
             <h3 className="font-medium">No pressure</h3>
             <p className="text-sm text-muted-foreground">
               No likes. No comments.
@@ -134,7 +157,7 @@ const Home = () => {
           </div>
 
           <div className="space-y-4">
-            <MessageSquareQuote className="mx-auto h-7 w-7 text-gray-400" />
+            <MessageSquareQuote className="mx-auto h-7 w-7 text-muted-foreground" />
             <h3 className="font-medium">Just honesty</h3>
             <p className="text-sm text-muted-foreground">
               Messages arrive untouched.
@@ -145,7 +168,7 @@ const Home = () => {
       </section>
 
       {/* FINAL CTA */}
-      <section className="px-6 py-28 bg-gray-50 text-center">
+      <section className="px-6 py-28 bg-muted/40 text-center">
         <div className="mx-auto max-w-2xl space-y-6">
           <h2 className="text-3xl font-semibold">
             Create a place for honesty
@@ -155,14 +178,12 @@ const Home = () => {
           </p>
 
           <Link href="/sign-up">
-            <Button size="lg" className="px-10">
+            <Button size="lg" className="px-8 cursor-pointer">
               Get started
             </Button>
           </Link>
         </div>
       </section>
-
-     
     </main>
   );
 };

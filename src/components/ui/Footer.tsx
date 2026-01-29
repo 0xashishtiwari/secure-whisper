@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer
       role="contentinfo"
-      className="w-full border-t bg-white/70 backdrop-blur-md supports-[backdrop-filter]:bg-white/60"
+      className="w-full border"
     >
       <div className="mx-auto max-w-6xl px-4 py-6 text-center space-y-2">
 

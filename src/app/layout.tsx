@@ -7,7 +7,7 @@ import Navbar from "@/components/ui/Navbar";
 import Script from "next/script";
 import OnekoFix from "@/components/ui/OnekoFix";
 import Footer from "@/components/ui/Footer";
-
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,22 +35,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-     
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground`}
-      > 
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground relative`}
+      >
+        {/* 🔽 BACKGROUND LAYER (lowest) */}
+        <AuroraBackground className="fixed inset-0 -z-50 pointer-events-none opacity-60" />
+
+        {/* 🔼 ONEKO (top-most) */}
+        <Script src="/oneko.js" strategy="afterInteractive" />
+        <OnekoFix />
+
+        {/* APP CONTENT */}
         <AuthProvider>
-        <Navbar />
-    
-         <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
+          <div className="relative z-0 flex min-h-screen flex-col">
+            <Navbar />
+
+            <main className="flex-1">
+              {children}
+            </main>
+
+            <Footer />
+          </div>
 
           <Toaster position="top-center" />
-       <Script src="/oneko.js" strategy="afterInteractive"></Script>
-       <Footer/>
         </AuthProvider>
-       <OnekoFix/>
       </body>
     </html>
   );

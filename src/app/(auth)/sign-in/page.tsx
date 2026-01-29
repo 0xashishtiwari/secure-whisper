@@ -72,17 +72,16 @@ const LoginPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+    <main className="min-h-screen  flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-12">
 
         {/* Intro */}
-        <div className="space-y-4">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Return quietly
+        <div className="space-y-4 flex justify-center flex-col items-center">
+          <h1 className="text-3xl font-semibold tracking-tight text-center">
+            Welcome to secure whisper
           </h1>
-          <p className="text-muted-foreground max-w-sm">
-            This space is private.
-            Only you can see what’s inside.
+          <p className="text-muted-foreground max-w-sm text-center">
+            Sign in to access your anonymous inbox.
           </p>
         </div>
 
@@ -151,7 +150,7 @@ const LoginPage = () => {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full h-11"
+              className="w-full h-11  cursor-pointer"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -170,25 +169,22 @@ const LoginPage = () => {
         </Form>
 
         {/* Footer */}
-        <div className="space-y-4 text-sm text-muted-foreground">
+        <div className="space-y-4 text-sm text-muted-foreground flex flex-col items-center">
           <Link
             href="/forgot-password"
-            className="underline"
+            className="text-sky-600 hover:underline"
           >
-            Forgot your password?
+            forgot password?
           </Link>
 
-          <p>
-            Don’t have a place yet?{" "}
-            <Link href="/sign-up" className="underline">
-              Create one
+          <p className="text-center">
+            Create a secure whisper account?{" "}
+            <Link href="/sign-up" className="text-sky-600 hover:underline">
+              sign up
             </Link>
           </p>
 
-          <p className="text-xs">
-            🔒 We never store sender identity.
-            Your privacy is built in.
-          </p>
+         
         </div>
       </div>
     </main>

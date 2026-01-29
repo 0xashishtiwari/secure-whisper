@@ -39,7 +39,7 @@ const ResetPassword = () => {
 
   if (!token || !email) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center px-4">
+      <main className="min-h-screen  flex items-center justify-center px-4">
         <div className="max-w-md space-y-6 text-center">
           <h1 className="text-2xl font-semibold">
             This link has expired
@@ -90,16 +90,16 @@ const ResetPassword = () => {
   }
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+    <main className="min-h-screen  flex items-center justify-center px-4 flex-col">
       <div className="w-full max-w-md space-y-12">
 
         {/* Intro */}
-        <div className="space-y-4">
+        <div className="space-y-4 flex justify-center flex-col items-center">
           <h1 className="text-3xl font-semibold tracking-tight">
-            Secure your access
+           Create a new password
           </h1>
-          <p className="text-muted-foreground max-w-sm">
-            Choose a new password to restore access to your private inbox.
+          <p className="text-muted-foreground max-w-xl text-center">
+            Your new password must be different from previous passwords.
           </p>
         </div>
 
@@ -183,17 +183,17 @@ const ResetPassword = () => {
         </Form>
 
         {/* Footer */}
-        <div className="space-y-4 text-sm text-muted-foreground">
+        <div className="space-y-4 text-sm text-muted-foreground flex items-center flex-col">
           <Link
             href="/sign-in"
-            className="inline-flex items-center gap-1 underline"
+            className="inline-flex items-center gap-1 text-sky-600 decoration-sky-600 hover:underline"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 text-sky-600" />
             Back to sign in
           </Link>
 
-          <p className="text-xs">
-            🔒 Passwords are encrypted and never stored in plain text.
+          <p className="text-xs text-center w-fit text-gray-600 tracking-wider">
+            Secure Whisper • No tracking • No ads. Ever.
           </p>
         </div>
       </div>
