@@ -45,7 +45,7 @@ const Home = () => {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center gap-2"
             >
-              <h1>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 <LayoutTextFlip
                   text="Things you’d never say"
                   words={[
@@ -55,8 +55,6 @@ const Home = () => {
                     "zero fear involved",
                     "no filters applied",
                   ]}
-
-                  className="text-3xl sm:text-4xl font-bold tracking-tight"
                 />
               </h1>
             </motion.div>
